@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">PopularMovies</string>
+
+    <!-- Main Activity -->
+    <string name="main_popular_movies_title">Popular Movies</string>
+
+    <!-- Details Activity -->
+    <string name="details_movie_title">Movie Details</string>
+    <string name="details_title_label">Title:</string>
+    <string name="details_release_date_label">Release Date:</string>
+    <string name="details_vote_average_label">Vote Average:</string>
+    <string name="details_plot_synopsis_label">Plot Synopsis:</string>
+
+    <!-- Common -->
+    <string name="movie_poster_image_description">Movie Poster</string>
+</resources>
