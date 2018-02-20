@@ -1,10 +1,10 @@
 package com.andrea.popularmovies.features.details.logic;
 
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.andrea.popularmovies.R;
-import com.andrea.popularmovies.application.MovieApplication;
 import com.andrea.popularmovies.features.details.DetailsContract;
 
 import java.lang.ref.WeakReference;
@@ -13,10 +13,13 @@ import javax.inject.Inject;
 
 public class DetailsPresenter implements DetailsContract.Presenter {
 
+    private final Context context;
+
     private WeakReference<DetailsContract.View> viewWeakReference;
 
-    @Inject
-    public DetailsPresenter(DetailsContract.View view) {
+    @Inject public DetailsPresenter(@NonNull Context context,
+                                    @NonNull DetailsContract.View view) {
+        this.context = context;
         viewWeakReference = new WeakReference<>(view);
 
         init();
@@ -26,21 +29,26 @@ public class DetailsPresenter implements DetailsContract.Presenter {
         DetailsContract.View view = viewWeakReference.get();
 
         if (view != null) {
-            view.renderScreenTitle(MovieApplication.getDagger().getContext().getString(R.string.details_movie_title));
+            view.renderScreenTitle(context.getString(R.string.details_movie_title));
         }
     }
 
-    public void populateDetails(@NonNull String title,
-                                @NonNull String releaseDate,
-                                @NonNull String voteAverage,
-                                @NonNull String plotSynopsis,
-                                @NonNull String posterPath) {
+    public void populateDetails(
+            @NonNull String title,
+            @NonNull String releaseDate,
+            @NonNull String voteAverage,
+            @NonNull String plotSynopsis,
+            @NonNull String posterPath) {
         DetailsContract.View view = viewWeakReference.get();
 
         if (view != null) {
             view.renderMovieTitle(title);
             view.renderReleaseDate(releaseDate);
-            view.renderVoteAverage(voteAverage);
+
+            float voteAvgFloat = Float.parseFloat(voteAverage);
+            float v = voteAvgFloat * 10;
+            view.renderVoteAverage((int) v + "%");
+
             view.renderPlotSynopsis(plotSynopsis);
             view.renderPosterImage(posterPath);
         }

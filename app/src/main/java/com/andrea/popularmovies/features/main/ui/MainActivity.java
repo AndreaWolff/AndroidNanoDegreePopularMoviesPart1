@@ -1,17 +1,16 @@
 package com.andrea.popularmovies.features.main.ui;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.telecom.Call;
 
 import com.andrea.popularmovies.R;
-import com.andrea.popularmovies.application.MovieApplication;
 import com.andrea.popularmovies.dagger.component.DaggerMainComponent;
 import com.andrea.popularmovies.dagger.module.MainModule;
 import com.andrea.popularmovies.features.common.domain.Movie;
@@ -24,6 +23,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.andrea.popularmovies.application.MovieApplication.getDagger;
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_PLOT_SYNOPSIS;
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_POSTER;
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_RELEASE_DATE;
@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     private Movie movie;
 
     @Inject MainPresenter presenter;
+    @Inject Context context;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +48,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         ButterKnife.bind(this);
 
         DaggerMainComponent.builder()
-                           .appComponent(MovieApplication.getDagger())
+                           .appComponent(getDagger())
                            .mainModule(new MainModule(this))
                            .build()
                            .inject(this);
 
         presenter.loadPopularMovies();
 
-        moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this,  context.getResources().getInteger(R.integer.grid_span_count)));
         moviePosterRecyclerView.setHasFixedSize(true);
     }
 

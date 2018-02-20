@@ -1,148 +1,129 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.andrea.popularmovies.features.details.ui.DetailsActivity"
-    >
+    android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textview_details_title_label"
-        android:layout_width="0dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/details_title_label"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
-
-    <ImageView
-        android:id="@+id/imageview_details_movie_poster"
-        android:layout_width="150dp"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="32dp"
-        android:contentDescription="@string/movie_poster_image_description"
-        android:minHeight="150dp"
-        android:scaleType="fitXY"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher"
-        />
+        tools:context="com.andrea.popularmovies.features.details.ui.DetailsActivity">
 
-    <TextView
-        android:id="@+id/textview_details_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_title_label"
-        tools:text="The Hunt for the Red October"
-        />
+        <TextView
+            android:id="@+id/textview_details_title_label"
+            android:layout_width="0dp"
+            android:layout_height="19dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="64dp"
+            android:text="@string/details_title_label"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textview_details_release_date_label"
-        android:layout_width="0dp"
-        android:layout_height="19dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/details_release_date_label"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_title"
-        />
+        <ImageView
+            android:id="@+id/imageview_details_movie_poster"
+            android:layout_width="150dp"
+            android:layout_height="250dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="32dp"
+            android:contentDescription="@string/movie_poster_image_description"
+            android:scaleType="fitCenter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher" />
 
-    <TextView
-        android:id="@+id/textview_details_release_date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date_label"
-        tools:text="2 March 1990"
-        />
+        <TextView
+            android:id="@+id/textview_details_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_title_label"
+            tools:text="The Hunt for the Red October" />
 
-    <TextView
-        android:id="@+id/textview_details_rating_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/details_vote_average_label"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date"
-        />
+        <TextView
+            android:id="@+id/textview_details_release_date_label"
+            android:layout_width="0dp"
+            android:layout_height="19dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/details_release_date_label"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_title" />
 
-    <TextView
-        android:id="@+id/textview_details_vote_average"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_rating_label"
-        app:layout_constraintVertical_bias="0.0"
-        tools:text="7.6/10"
-        />
+        <TextView
+            android:id="@+id/textview_details_release_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date_label"
+            tools:text="2 March 1990" />
 
-    <TextView
-        android:id="@+id/textview_details_plot_synposis_label"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/details_plot_synopsis_label"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_vote_average"
-        />
+        <TextView
+            android:id="@+id/textview_details_rating_label"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/details_vote_average_label"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date" />
 
-    <TextView
-        android:id="@+id/textview_details_plot_synposis"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textview_details_plot_synposis_label"
-        tools:text="This is a movie about a boat and spy and has lots of drama and is ultimately a good movie!"
-        />
+        <TextView
+            android:id="@+id/textview_details_vote_average"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_rating_label"
+            tools:text="7.6/10" />
 
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="193dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="193dp"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        <TextView
+            android:id="@+id/textview_details_plot_synopsis_label"
+            android:layout_width="0dp"
+            android:layout_height="19dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:text="@string/details_plot_synopsis_label"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_details_movie_poster" />
 
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/textview_details_plot_synopsis"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_plot_synopsis_label"
+            tools:text="This is a movie about a boat and spy and has lots of drama and is ultimately a good movie!" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</ScrollView>

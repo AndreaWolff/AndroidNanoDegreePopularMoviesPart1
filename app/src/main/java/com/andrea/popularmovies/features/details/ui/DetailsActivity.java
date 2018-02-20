@@ -31,7 +31,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @BindView(R.id.textview_details_title) TextView titleTextView;
     @BindView(R.id.textview_details_release_date) TextView releaseDateTextView;
     @BindView(R.id.textview_details_vote_average) TextView voteAverageTextView;
-    @BindView(R.id.textview_details_plot_synposis) TextView plotSynopsisTextView;
+    @BindView(R.id.textview_details_plot_synopsis) TextView plotSynopsisTextView;
     @BindView(R.id.imageview_details_movie_poster) ImageView posterImageView;
 
     @Inject DetailsPresenter presenter;
