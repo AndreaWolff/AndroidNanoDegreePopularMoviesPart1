@@ -16,6 +16,8 @@ public interface DetailsContract {
         void renderPlotSynopsis(@NonNull String plotSynopsis);
 
         void renderPosterImage(@NonNull String posterPath);
+
+        void finishActivity();
     }
 
     interface Presenter {

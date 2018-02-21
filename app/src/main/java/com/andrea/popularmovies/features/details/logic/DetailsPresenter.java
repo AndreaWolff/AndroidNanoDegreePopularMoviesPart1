@@ -33,21 +33,19 @@ public class DetailsPresenter implements DetailsContract.Presenter {
         }
     }
 
-    public void populateDetails(
-            @NonNull String title,
-            @NonNull String releaseDate,
-            @NonNull String voteAverage,
-            @NonNull String plotSynopsis,
-            @NonNull String posterPath) {
+    public void populateDetails(@NonNull String title,
+                                @NonNull String releaseDate,
+                                float voteAverage,
+                                @NonNull String plotSynopsis,
+                                @NonNull String posterPath) {
         DetailsContract.View view = viewWeakReference.get();
 
         if (view != null) {
             view.renderMovieTitle(title);
             view.renderReleaseDate(releaseDate);
 
-            float voteAvgFloat = Float.parseFloat(voteAverage);
-            float v = voteAvgFloat * 10;
-            view.renderVoteAverage((int) v + "%");
+            voteAverage = voteAverage * 10;
+            view.renderVoteAverage((int) voteAverage + "%");
 
             view.renderPlotSynopsis(plotSynopsis);
             view.renderPosterImage(posterPath);
@@ -56,5 +54,13 @@ public class DetailsPresenter implements DetailsContract.Presenter {
 
     public void disconnectView() {
         viewWeakReference = new WeakReference<>(null);
+    }
+
+    public void finish() {
+        DetailsContract.View view = viewWeakReference.get();
+
+        if (view != null) {
+            view.finishActivity();
+        }
     }
 }

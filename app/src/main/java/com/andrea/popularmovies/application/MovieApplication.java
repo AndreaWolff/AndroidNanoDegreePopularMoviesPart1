@@ -7,6 +7,7 @@ import com.andrea.popularmovies.dagger.component.AppComponent;
 import com.andrea.popularmovies.dagger.component.DaggerAppComponent;
 import com.andrea.popularmovies.dagger.module.AppModule;
 import com.andrea.popularmovies.dagger.module.NetModule;
+import com.facebook.stetho.Stetho;
 
 public class MovieApplication extends Application {
 
@@ -20,6 +21,8 @@ public class MovieApplication extends Application {
         application = this;
 
         appComponent = createDaggerComponent();
+
+        Stetho.initializeWithDefaults(this);
     }
 
     private AppComponent createDaggerComponent() {

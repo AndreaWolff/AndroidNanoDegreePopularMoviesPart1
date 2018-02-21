@@ -5,7 +5,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.andrea.popularmovies.R;
-import com.andrea.popularmovies.features.common.domain.Movie;
+import com.andrea.popularmovies.features.common.domain.PopularMovies;
 import com.andrea.popularmovies.features.main.MainContract;
 
 import java.lang.ref.WeakReference;
@@ -50,36 +50,42 @@ public class MainPresenter implements MainContract.Presenter {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<Movie>() {
+                .subscribe(new Observer<PopularMovies>() {
+                    @Override public void onCompleted() {
+                        // do nothing
+                    }
 
-            @Override public void onCompleted() {
-                // do nothing
-            }
+                    @Override public void onError(Throwable e) {
+                        handlePopularMoviesResponseError(e);
+                    }
 
-            @Override public void onError(Throwable e) {
-                MainContract.View view = viewWeakReference.get();
-
-                if (view != null) {
-                    view.showError(e.getMessage());
-                }
-            }
-
-            @Override public void onNext(Movie movie) {
-                MainContract.View view = viewWeakReference.get();
-
-                if (view != null) {
-                    view.showPopularMovies(movie);
-                }
-            }
-        });
-
+                    @Override public void onNext(PopularMovies popularMovies) {
+                        handlePopularMoviesResponseSuccessful(popularMovies);
+                    }
+                });
     }
 
-    public void onMoviePosterSelected() {
+    private void handlePopularMoviesResponseSuccessful(PopularMovies popularMovies) {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
-            view.navigateToMovieDetails();
+            view.showPopularMovies(popularMovies);
+        }
+    }
+
+    private void handlePopularMoviesResponseError(Throwable e) {
+        MainContract.View view = viewWeakReference.get();
+
+        if (view != null) {
+            view.showError(e.getMessage());
+        }
+    }
+
+    public void onMoviePosterSelected(int listItem) {
+        MainContract.View view = viewWeakReference.get();
+
+        if (view != null) {
+            view.navigateToMovieDetails(listItem);
         }
     }
 
@@ -88,6 +94,6 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     public interface MovieRepository {
-        @GET("movie/550?api_key=") Observable<Movie> getPopularMoviesList();
+        @GET("movie/popular?api_key=") Observable<PopularMovies> getPopularMoviesList();
     }
 }

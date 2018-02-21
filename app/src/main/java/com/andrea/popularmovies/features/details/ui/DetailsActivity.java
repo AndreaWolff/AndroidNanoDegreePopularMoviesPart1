@@ -50,17 +50,22 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
         Intent intent = getIntent();
         if (intent == null) {
-            // TODO: pass through presenter
-            finish();
+            presenter.finish();
         }
 
-        String title = intent.getStringExtra(MOVIE_TITLE);
-        String releaseDate = intent.getStringExtra(MOVIE_RELEASE_DATE);
-        String voteAverage = intent.getStringExtra(MOVIE_VOTE_AVERAGE);
-        String plotSynopsis = intent.getStringExtra(MOVIE_PLOT_SYNOPSIS);
-        String posterPath = intent.getStringExtra(MOVIE_POSTER);
+        @SuppressWarnings("ConstantConditions")
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            String title = extras.getString(MOVIE_TITLE);
+            String releaseDate = extras.getString(MOVIE_RELEASE_DATE);
+            float voteAverage = extras.getFloat(MOVIE_VOTE_AVERAGE);
+            String plotSynopsis = extras.getString(MOVIE_PLOT_SYNOPSIS);
+            String posterPath = extras.getString(MOVIE_POSTER);
 
-        presenter.populateDetails(title, releaseDate, voteAverage, plotSynopsis, posterPath);
+            if (title != null && releaseDate != null && plotSynopsis != null && posterPath != null) {
+                presenter.populateDetails(title, releaseDate, voteAverage, plotSynopsis, posterPath);
+            }
+        }
     }
 
     @Override protected void onDestroy() {
@@ -93,6 +98,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         Glide.with(this)
              .load(posterPath)
              .into(posterImageView);
+    }
+
+    @Override public void finishActivity() {
+        finish();
     }
     // endregion
 }

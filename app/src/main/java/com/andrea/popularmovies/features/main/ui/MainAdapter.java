@@ -10,28 +10,28 @@ import android.widget.ImageView;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.application.MovieApplication;
-import com.andrea.popularmovies.features.common.domain.Movie;
 import com.bumptech.glide.Glide;
+
+import java.util.List;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolder> {
 
     private ListItemClickListener onClickListener;
-    private Movie movie;
-    private int numOfItems;
+    private List<String> moviePosterPath;
 
     interface ListItemClickListener {
         void onListItemClick(int listItem);
     }
 
-    public MainAdapter(
-            @NonNull ListItemClickListener onClickListener, @NonNull Movie movie, int numOfItems) {
+    public MainAdapter(@NonNull ListItemClickListener onClickListener,
+                       @NonNull List<String> moviePosterPath) {
         this.onClickListener = onClickListener;
-        this.movie = movie;
-        this.numOfItems = numOfItems;
+        this.moviePosterPath = moviePosterPath;
     }
 
     @Override public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_poster_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                                  .inflate(R.layout.movie_poster_list_item, parent, false);
         return new MovieViewHolder(view);
     }
 
@@ -40,7 +40,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
     }
 
     @Override public int getItemCount() {
-        return numOfItems > 0 ? numOfItems : 0;
+        return !moviePosterPath.isEmpty() && moviePosterPath.size() > 0 ? moviePosterPath.size() : 0;
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -55,7 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
 
         void bind(int listItem) {
             Glide.with(MovieApplication.getDagger().getContext())
-                 .load(movie.getPosterPath())
+                 .load(moviePosterPath.get(listItem))
                  .into(moviePosterImageView);
         }
 

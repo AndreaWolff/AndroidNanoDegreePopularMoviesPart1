@@ -14,9 +14,13 @@ import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.dagger.component.DaggerMainComponent;
 import com.andrea.popularmovies.dagger.module.MainModule;
 import com.andrea.popularmovies.features.common.domain.Movie;
+import com.andrea.popularmovies.features.common.domain.PopularMovies;
 import com.andrea.popularmovies.features.details.ui.DetailsActivity;
 import com.andrea.popularmovies.features.main.MainContract;
 import com.andrea.popularmovies.features.main.logic.MainPresenter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,14 +36,12 @@ import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_V
 
 public class MainActivity extends AppCompatActivity implements MainContract.View, MainAdapter.ListItemClickListener {
 
-    private static final int NUM_LIST_ITEMS = 10;
-
     @BindView(R.id.recyclerview_main_movie_posters) RecyclerView moviePosterRecyclerView;
-
-    private Movie movie;
 
     @Inject MainPresenter presenter;
     @Inject Context context;
+
+    private List<Movie> movieList;
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         presenter.loadPopularMovies();
 
-        moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this,  context.getResources().getInteger(R.integer.grid_span_count)));
+        moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this, context.getResources().getInteger(R.integer.grid_span_count)));
         moviePosterRecyclerView.setHasFixedSize(true);
     }
 
@@ -69,10 +71,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         setTitle(title);
     }
 
-    @Override public void showPopularMovies(@NonNull Movie movie) {
-        this.movie = movie;
+    @Override public void showPopularMovies(@NonNull PopularMovies popularMovies) {
+        movieList = new ArrayList<>();
+        movieList.addAll(popularMovies.getPopularMovieList());
 
-        MainAdapter adapter = new MainAdapter(this, movie, NUM_LIST_ITEMS);
+        List<String> moviePosterPath = new ArrayList<>();
+
+        for (Movie popularMovie : popularMovies.getPopularMovieList()) {
+            moviePosterPath.add(popularMovie.getPosterPath());
+        }
+
+        MainAdapter adapter = new MainAdapter(this, moviePosterPath);
         moviePosterRecyclerView.setAdapter(adapter);
     }
 
@@ -80,27 +89,27 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override public void onClick(DialogInterface dialogInterface, int i) {
-                        // do nothing
-                    }
-                });
+            @Override public void onClick(DialogInterface dialogInterface, int i) {
+                // do nothing
+            }
+        });
         builder.show();
     }
 
-    @Override public void navigateToMovieDetails() {
+    @Override public void navigateToMovieDetails(int listItem) {
         Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(MOVIE_TITLE, movie.getTitle());
-        intent.putExtra(MOVIE_RELEASE_DATE, movie.getReleaseDate());
-        intent.putExtra(MOVIE_VOTE_AVERAGE, movie.getVoteAverage());
-        intent.putExtra(MOVIE_PLOT_SYNOPSIS, movie.getPlotSynopsis());
-        intent.putExtra(MOVIE_POSTER, movie.getPosterPath());
+        intent.putExtra(MOVIE_TITLE, movieList.get(listItem).getTitle());
+        intent.putExtra(MOVIE_RELEASE_DATE, movieList.get(listItem).getReleaseDate());
+        intent.putExtra(MOVIE_VOTE_AVERAGE, movieList.get(listItem).getVoteAverage());
+        intent.putExtra(MOVIE_PLOT_SYNOPSIS, movieList.get(listItem).getPlotSynopsis());
+        intent.putExtra(MOVIE_POSTER, movieList.get(listItem).getPosterPath());
         startActivity(intent);
     }
     // endregion
 
     // region Main Adapter
     @Override public void onListItemClick(int listItem) {
-        presenter.onMoviePosterSelected();
+        presenter.onMoviePosterSelected(listItem);
     }
     // endregion
 }
