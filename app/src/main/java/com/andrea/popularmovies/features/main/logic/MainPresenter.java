@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.features.common.domain.PopularMovies;
+import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
 import com.andrea.popularmovies.features.main.MainContract;
 
 import java.lang.ref.WeakReference;
@@ -45,35 +46,64 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     public void loadPopularMovies() {
-        retrofit.create(MovieRepository.class)
-                .getPopularMoviesList()
+        retrofit.create(MovieRepository.class).getPopularMoviesList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<PopularMovies>() {
-                    @Override public void onCompleted() {
-                        // do nothing
-                    }
+            @Override public void onCompleted() {
+                // do nothing
+            }
 
-                    @Override public void onError(Throwable e) {
-                        handlePopularMoviesResponseError(e);
-                    }
+            @Override public void onError(Throwable e) {
+                handleResponseError(e);
+            }
 
-                    @Override public void onNext(PopularMovies popularMovies) {
-                        handlePopularMoviesResponseSuccessful(popularMovies);
-                    }
-                });
+            @Override public void onNext(PopularMovies popularMovies) {
+                handlePopularMoviesResponseSuccessful(popularMovies);
+            }
+        });
+    }
+
+    public void loadTopRatedMovies() {
+        retrofit.create(MovieRepository.class).getTopRatedMoviesList()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .unsubscribeOn(Schedulers.io())
+                .subscribe(new Observer<TopRatedMovies>() {
+            @Override public void onCompleted() {
+                // do nothing
+            }
+
+            @Override public void onError(Throwable e) {
+                handleResponseError(e);
+            }
+
+            @Override public void onNext(TopRatedMovies topRatedMovies) {
+                handleTopRatedMoviesResponseSuccessful(topRatedMovies);
+            }
+        });
     }
 
     private void handlePopularMoviesResponseSuccessful(PopularMovies popularMovies) {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
+            view.renderPopularMoviesTitle(context.getString(R.string.main_popular_movies_title));
             view.showPopularMovies(popularMovies);
         }
     }
 
-    private void handlePopularMoviesResponseError(Throwable e) {
+    private void handleTopRatedMoviesResponseSuccessful(TopRatedMovies topRatedMovies) {
+        MainContract.View view = viewWeakReference.get();
+
+        if (view != null) {
+            view.renderTopRatedMoviesTitle(context.getString(R.string.main_top_rated_movies_title));
+            view.showTopRatedMovies(topRatedMovies);
+        }
+    }
+
+    private void handleResponseError(Throwable e) {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
@@ -95,5 +125,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     public interface MovieRepository {
         @GET("movie/popular?api_key=") Observable<PopularMovies> getPopularMoviesList();
+
+        @GET("movie/top_rated?api_key=") Observable<TopRatedMovies> getTopRatedMoviesList();
     }
 }

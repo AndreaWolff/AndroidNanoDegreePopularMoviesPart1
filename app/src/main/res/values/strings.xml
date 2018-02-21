@@ -3,6 +3,7 @@
 
     <!-- Main Activity -->
     <string name="main_popular_movies_title">Popular Movies</string>
+    <string name="main_top_rated_movies_title">Top-Rated Movies</string>
 
     <!-- Details Activity -->
     <string name="details_movie_title">Movie Details</string>
@@ -10,6 +11,10 @@
     <string name="details_release_date_label">Release Date:</string>
     <string name="details_vote_average_label">Vote Average:</string>
     <string name="details_plot_synopsis_label">Plot Synopsis:</string>
+
+    <!-- Settings Menu -->
+    <string name="setting_menu_popular_movies_title">Popular Movies</string>
+    <string name="setting_menu_top_rated_movies_title">Top-Rated Movies</string>
 
     <!-- Common -->
     <string name="movie_poster_image_description">Movie Poster</string>

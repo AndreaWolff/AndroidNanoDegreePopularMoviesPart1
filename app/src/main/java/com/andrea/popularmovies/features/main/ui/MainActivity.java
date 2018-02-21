@@ -9,12 +9,16 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.dagger.component.DaggerMainComponent;
 import com.andrea.popularmovies.dagger.module.MainModule;
 import com.andrea.popularmovies.features.common.domain.Movie;
 import com.andrea.popularmovies.features.common.domain.PopularMovies;
+import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
 import com.andrea.popularmovies.features.details.ui.DetailsActivity;
 import com.andrea.popularmovies.features.main.MainContract;
 import com.andrea.popularmovies.features.main.logic.MainPresenter;
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         presenter.loadPopularMovies();
 
+        movieList = new ArrayList<>();
         moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this, context.getResources().getInteger(R.integer.grid_span_count)));
         moviePosterRecyclerView.setHasFixedSize(true);
     }
@@ -66,21 +71,60 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         presenter.disconnectView();
     }
 
+    // region Settings menu
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        new MenuInflater(this).inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_popular_movies:
+                presenter.loadPopularMovies();
+                return true;
+            case R.id.menu_top_rated_movies:
+                presenter.loadTopRatedMovies();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    // endregion
+
     // region View methods
     @Override public void renderPopularMoviesTitle(@NonNull String title) {
         setTitle(title);
     }
 
+    @Override public void renderTopRatedMoviesTitle(@NonNull String title) {
+        setTitle(title);
+    }
+
     @Override public void showPopularMovies(@NonNull PopularMovies popularMovies) {
-        movieList = new ArrayList<>();
+        movieList.clear();
         movieList.addAll(popularMovies.getPopularMovieList());
 
         List<String> moviePosterPath = new ArrayList<>();
-
         for (Movie popularMovie : popularMovies.getPopularMovieList()) {
             moviePosterPath.add(popularMovie.getPosterPath());
         }
 
+        configureMainAdapter(moviePosterPath);
+    }
+
+    @Override public void showTopRatedMovies(@NonNull TopRatedMovies topRatedMovies) {
+        movieList.clear();
+        movieList.addAll(topRatedMovies.getTopRatedMoviesList());
+
+        List<String> moviePosterPath = new ArrayList<>();
+        for (Movie topRatedMovie : topRatedMovies.getTopRatedMoviesList()) {
+            moviePosterPath.add(topRatedMovie.getPosterPath());
+        }
+
+        configureMainAdapter(moviePosterPath);
+    }
+
+    private void configureMainAdapter(List<String> moviePosterPath) {
         MainAdapter adapter = new MainAdapter(this, moviePosterPath);
         moviePosterRecyclerView.setAdapter(adapter);
     }
