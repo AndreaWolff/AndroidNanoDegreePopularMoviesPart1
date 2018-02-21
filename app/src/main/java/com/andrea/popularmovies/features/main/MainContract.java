@@ -18,6 +18,10 @@ public interface MainContract {
 
         void showError(@NonNull String message);
 
+        void showProgressBar();
+
+        void hideProgressBar();
+
         void navigateToMovieDetails(int listItem);
     }
 

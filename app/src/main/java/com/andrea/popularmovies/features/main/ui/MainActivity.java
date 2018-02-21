@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ProgressBar;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.dagger.component.DaggerMainComponent;
@@ -31,6 +33,8 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.andrea.popularmovies.application.MovieApplication.getDagger;
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_PLOT_SYNOPSIS;
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_POSTER;
@@ -41,9 +45,12 @@ import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_V
 public class MainActivity extends AppCompatActivity implements MainContract.View, MainAdapter.ListItemClickListener {
 
     @BindView(R.id.recyclerview_main_movie_posters) RecyclerView moviePosterRecyclerView;
+    @BindView(R.id.progressbar_loading) ProgressBar loadingProgressBar;
 
     @Inject MainPresenter presenter;
     @Inject Context context;
+
+    private static final String MOVIE_LIST = "MAPML";
 
     private List<Movie> movieList;
 
@@ -59,11 +66,24 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                            .build()
                            .inject(this);
 
-        presenter.loadPopularMovies();
-
         movieList = new ArrayList<>();
         moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this, context.getResources().getInteger(R.integer.grid_span_count)));
         moviePosterRecyclerView.setHasFixedSize(true);
+
+        if (savedInstanceState != null) {
+            movieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST);
+            configureMainAdapter(movieList);
+            return;
+        }
+
+        presenter.loadPopularMovies();
+    }
+
+    @Override public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (movieList != null) {
+            outState.putParcelableArrayList(MOVIE_LIST, (ArrayList<? extends Parcelable>) movieList);
+        }
     }
 
     @Override protected void onDestroy() {
@@ -104,28 +124,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         movieList.clear();
         movieList.addAll(popularMovies.getPopularMovieList());
 
-        List<String> moviePosterPath = new ArrayList<>();
-        for (Movie popularMovie : popularMovies.getPopularMovieList()) {
-            moviePosterPath.add(popularMovie.getPosterPath());
-        }
-
-        configureMainAdapter(moviePosterPath);
+        configureMainAdapter(movieList);
     }
 
     @Override public void showTopRatedMovies(@NonNull TopRatedMovies topRatedMovies) {
         movieList.clear();
         movieList.addAll(topRatedMovies.getTopRatedMoviesList());
 
-        List<String> moviePosterPath = new ArrayList<>();
-        for (Movie topRatedMovie : topRatedMovies.getTopRatedMoviesList()) {
-            moviePosterPath.add(topRatedMovie.getPosterPath());
-        }
-
-        configureMainAdapter(moviePosterPath);
+        configureMainAdapter(movieList);
     }
 
-    private void configureMainAdapter(List<String> moviePosterPath) {
-        MainAdapter adapter = new MainAdapter(this, moviePosterPath);
+    private void configureMainAdapter(List<Movie> movieList) {
+        MainAdapter adapter = new MainAdapter(this, movieList);
         moviePosterRecyclerView.setAdapter(adapter);
     }
 
@@ -138,6 +148,14 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             }
         });
         builder.show();
+    }
+
+    @Override public void showProgressBar() {
+        loadingProgressBar.setVisibility(VISIBLE);
+    }
+
+    @Override public void hideProgressBar() {
+        loadingProgressBar.setVisibility(GONE);
     }
 
     @Override public void navigateToMovieDetails(int listItem) {

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.application.MovieApplication;
+import com.andrea.popularmovies.features.common.domain.Movie;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -17,16 +18,16 @@ import java.util.List;
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolder> {
 
     private ListItemClickListener onClickListener;
-    private List<String> moviePosterPath;
+    private List<Movie> movieList;
 
     interface ListItemClickListener {
         void onListItemClick(int listItem);
     }
 
     public MainAdapter(@NonNull ListItemClickListener onClickListener,
-                       @NonNull List<String> moviePosterPath) {
+                       @NonNull List<Movie> movieList) {
         this.onClickListener = onClickListener;
-        this.moviePosterPath = moviePosterPath;
+        this.movieList = movieList;
     }
 
     @Override public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,7 +41,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
     }
 
     @Override public int getItemCount() {
-        return !moviePosterPath.isEmpty() && moviePosterPath.size() > 0 ? moviePosterPath.size() : 0;
+        return movieList != null && movieList.size() > 0 ? movieList.size() : 0;
     }
 
     class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -55,7 +56,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
 
         void bind(int listItem) {
             Glide.with(MovieApplication.getDagger().getContext())
-                 .load(moviePosterPath.get(listItem))
+                 .load(movieList.get(listItem).getPosterPath())
                  .into(moviePosterImageView);
         }
 

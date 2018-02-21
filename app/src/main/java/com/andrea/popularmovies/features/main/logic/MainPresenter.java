@@ -46,6 +46,12 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     public void loadPopularMovies() {
+        MainContract.View view = viewWeakReference.get();
+
+        if (view != null) {
+            view.showProgressBar();
+        }
+
         retrofit.create(MovieRepository.class).getPopularMoviesList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -66,11 +72,18 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     public void loadTopRatedMovies() {
+        MainContract.View view = viewWeakReference.get();
+
+        if (view != null) {
+            view.showProgressBar();
+        }
+
         retrofit.create(MovieRepository.class).getTopRatedMoviesList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<TopRatedMovies>() {
+
             @Override public void onCompleted() {
                 // do nothing
             }
@@ -89,6 +102,7 @@ public class MainPresenter implements MainContract.Presenter {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
+            view.hideProgressBar();
             view.renderPopularMoviesTitle(context.getString(R.string.main_popular_movies_title));
             view.showPopularMovies(popularMovies);
         }
@@ -98,6 +112,7 @@ public class MainPresenter implements MainContract.Presenter {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
+            view.hideProgressBar();
             view.renderTopRatedMoviesTitle(context.getString(R.string.main_top_rated_movies_title));
             view.showTopRatedMovies(topRatedMovies);
         }
