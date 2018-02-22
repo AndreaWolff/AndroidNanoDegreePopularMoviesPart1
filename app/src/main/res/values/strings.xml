@@ -7,9 +7,7 @@
 
     <!-- Details Activity -->
     <string name="details_movie_title">Movie Details</string>
-    <string name="details_title_label">Title:</string>
     <string name="details_release_date_label">Release Date:</string>
-    <string name="details_vote_average_label">Vote Average:</string>
     <string name="details_plot_synopsis_label">Plot Synopsis:</string>
 
     <!-- Settings Menu -->
@@ -18,5 +16,6 @@
 
     <!-- Common -->
     <string name="movie_poster_image_description">Movie Poster</string>
+    <string name="movie_backdrop_image_description">Backdrop Photo</string>
 
 </resources>

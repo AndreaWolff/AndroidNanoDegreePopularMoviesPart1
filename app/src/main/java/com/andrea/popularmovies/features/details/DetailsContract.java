@@ -11,11 +11,13 @@ public interface DetailsContract {
 
         void renderReleaseDate(@NonNull String releaseDate);
 
-        void renderVoteAverage(@NonNull String voteAverage);
+        void renderVoteAverage(@NonNull String voteAverage, float rating);
 
         void renderPlotSynopsis(@NonNull String plotSynopsis);
 
         void renderPosterImage(@NonNull String posterPath);
+
+        void renderBackdropPhoto(@NonNull String backdropPhotoPath);
 
         void finishActivity();
     }

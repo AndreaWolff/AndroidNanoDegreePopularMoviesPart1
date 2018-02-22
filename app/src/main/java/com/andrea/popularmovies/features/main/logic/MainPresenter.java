@@ -2,37 +2,70 @@ package com.andrea.popularmovies.features.main.logic;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 
 import com.andrea.popularmovies.R;
+import com.andrea.popularmovies.features.common.dao.MovieDao;
+import com.andrea.popularmovies.features.common.domain.Movie;
 import com.andrea.popularmovies.features.common.domain.PopularMovies;
 import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
+import com.andrea.popularmovies.features.details.ui.DetailsActivity;
 import com.andrea.popularmovies.features.main.MainContract;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
-import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_BACKDROP_PHOTO;
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_PLOT_SYNOPSIS;
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_POSTER;
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_RELEASE_DATE;
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_TITLE;
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_VOTE_AVERAGE;
 
 public class MainPresenter implements MainContract.Presenter {
 
-    private final Retrofit retrofit;
+    private static final String MOVIE_LIST = "MAPML";
+
+    private final MovieDao movieDao;
     private final Context context;
 
     private WeakReference<MainContract.View> viewWeakReference;
+    private List<Movie> movieList;
 
-    @Inject public MainPresenter(@NonNull Retrofit retrofit,
-                                 @NonNull Context context,
-                                 @NonNull MainContract.View view) {
-        this.retrofit = retrofit;
+    @Inject public MainPresenter(@NonNull MovieDao movieDao,
+                                 @NonNull Context context) {
+        this.movieDao = movieDao;
         this.context = context;
+        movieList = new ArrayList<>();
+    }
+
+    public void connectView(@NonNull MainContract.View view, @Nullable Bundle savedInstanceState) {
         viewWeakReference = new WeakReference<>(view);
+
+        if (savedInstanceState != null) {
+            movieList = savedInstanceState.getParcelableArrayList(MOVIE_LIST);
+
+            MainContract.View mainView = viewWeakReference.get();
+
+            if (mainView != null) {
+                mainView.showMoviesList(movieList);
+                return;
+            }
+        }
+
+        loadPopularMovies();
 
         init();
     }
@@ -45,6 +78,16 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
+    public void onSavedInstanceState(Bundle outState) {
+        if (movieList != null) {
+            outState.putParcelableArrayList(MOVIE_LIST, (ArrayList<? extends Parcelable>) movieList);
+        }
+    }
+
+    public void disconnectView() {
+        viewWeakReference = new WeakReference<>(null);
+    }
+
     public void loadPopularMovies() {
         MainContract.View view = viewWeakReference.get();
 
@@ -52,10 +95,8 @@ public class MainPresenter implements MainContract.Presenter {
             view.showProgressBar();
         }
 
-        retrofit.create(MovieRepository.class).getPopularMoviesList()
-                .subscribeOn(Schedulers.io())
+        movieDao.getPopularMoviesList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<PopularMovies>() {
             @Override public void onCompleted() {
                 // do nothing
@@ -78,10 +119,8 @@ public class MainPresenter implements MainContract.Presenter {
             view.showProgressBar();
         }
 
-        retrofit.create(MovieRepository.class).getTopRatedMoviesList()
-                .subscribeOn(Schedulers.io())
+        movieDao.getTopRatedMoviesList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .unsubscribeOn(Schedulers.io())
                 .subscribe(new Observer<TopRatedMovies>() {
 
             @Override public void onCompleted() {
@@ -104,7 +143,10 @@ public class MainPresenter implements MainContract.Presenter {
         if (view != null) {
             view.hideProgressBar();
             view.renderPopularMoviesTitle(context.getString(R.string.main_popular_movies_title));
-            view.showPopularMovies(popularMovies);
+
+            movieList.clear();
+            movieList.addAll(popularMovies.getPopularMovieList());
+            view.showMoviesList(movieList);
         }
     }
 
@@ -114,7 +156,10 @@ public class MainPresenter implements MainContract.Presenter {
         if (view != null) {
             view.hideProgressBar();
             view.renderTopRatedMoviesTitle(context.getString(R.string.main_top_rated_movies_title));
-            view.showTopRatedMovies(topRatedMovies);
+
+            movieList.clear();
+            movieList.addAll(topRatedMovies.getTopRatedMoviesList());
+            view.showMoviesList(movieList);
         }
     }
 
@@ -122,7 +167,11 @@ public class MainPresenter implements MainContract.Presenter {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
-            view.showError(e.getMessage());
+            view.showError(new AlertDialog.Builder(context).setMessage(e.getMessage()).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override public void onClick(DialogInterface dialogInterface, int i) {
+                    // do nothing
+                }
+            }));
         }
     }
 
@@ -130,17 +179,16 @@ public class MainPresenter implements MainContract.Presenter {
         MainContract.View view = viewWeakReference.get();
 
         if (view != null) {
-            view.navigateToMovieDetails(listItem);
+            Intent intent = new Intent(context, DetailsActivity.class);
+            Movie movie = movieList.get(listItem);
+            intent.putExtra(MOVIE_TITLE, movie.getTitle());
+            intent.putExtra(MOVIE_RELEASE_DATE, movie.getReleaseDate());
+            intent.putExtra(MOVIE_VOTE_AVERAGE, movie.getVoteAverage());
+            intent.putExtra(MOVIE_PLOT_SYNOPSIS, movie.getPlotSynopsis());
+            intent.putExtra(MOVIE_POSTER, movie.getPosterPath());
+            intent.putExtra(MOVIE_BACKDROP_PHOTO, movie.getBackdropPhotoPath());
+
+            view.navigateToMovieDetails(intent);
         }
-    }
-
-    public void disconnectView() {
-        viewWeakReference = new WeakReference<>(null);
-    }
-
-    public interface MovieRepository {
-        @GET("movie/popular?api_key=") Observable<PopularMovies> getPopularMoviesList();
-
-        @GET("movie/top_rated?api_key=") Observable<TopRatedMovies> getTopRatedMoviesList();
     }
 }

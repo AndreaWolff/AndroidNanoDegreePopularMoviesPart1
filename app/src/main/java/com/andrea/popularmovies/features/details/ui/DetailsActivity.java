@@ -1,38 +1,33 @@
 package com.andrea.popularmovies.features.details.ui;
 
-import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.application.MovieApplication;
+import com.andrea.popularmovies.base.BaseActivity;
 import com.andrea.popularmovies.dagger.component.DaggerDetailsComponent;
-import com.andrea.popularmovies.dagger.module.DetailsModule;
 import com.andrea.popularmovies.features.details.DetailsContract;
 import com.andrea.popularmovies.features.details.logic.DetailsPresenter;
-import com.bumptech.glide.Glide;
+import com.andrea.popularmovies.util.GlideUtil;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_PLOT_SYNOPSIS;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_POSTER;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_RELEASE_DATE;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_TITLE;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_VOTE_AVERAGE;
-
-public class DetailsActivity extends AppCompatActivity implements DetailsContract.View {
+public class DetailsActivity extends BaseActivity implements DetailsContract.View {
 
     @BindView(R.id.textview_details_title) TextView titleTextView;
     @BindView(R.id.textview_details_release_date) TextView releaseDateTextView;
+    @BindView(R.id.ratingbar_voting_average_rating) RatingBar voteAverageRatingBar;
     @BindView(R.id.textview_details_vote_average) TextView voteAverageTextView;
     @BindView(R.id.textview_details_plot_synopsis) TextView plotSynopsisTextView;
     @BindView(R.id.imageview_details_movie_poster) ImageView posterImageView;
+    @BindView(R.id.imageview_details_backdrop_photo) ImageView backdropPhotoImageView;
 
     @Inject DetailsPresenter presenter;
 
@@ -44,28 +39,10 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
         DaggerDetailsComponent.builder()
                               .appComponent(MovieApplication.getDagger())
-                              .detailsModule(new DetailsModule(this))
                               .build()
                               .inject(this);
 
-        Intent intent = getIntent();
-        if (intent == null) {
-            presenter.finish();
-        }
-
-        @SuppressWarnings("ConstantConditions")
-        Bundle extras = intent.getExtras();
-        if (extras != null) {
-            String title = extras.getString(MOVIE_TITLE);
-            String releaseDate = extras.getString(MOVIE_RELEASE_DATE);
-            float voteAverage = extras.getFloat(MOVIE_VOTE_AVERAGE);
-            String plotSynopsis = extras.getString(MOVIE_PLOT_SYNOPSIS);
-            String posterPath = extras.getString(MOVIE_POSTER);
-
-            if (title != null && releaseDate != null && plotSynopsis != null && posterPath != null) {
-                presenter.populateDetails(title, releaseDate, voteAverage, plotSynopsis, posterPath);
-            }
-        }
+        presenter.connectView(this, getIntent());
     }
 
     @Override protected void onDestroy() {
@@ -86,7 +63,8 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         releaseDateTextView.setText(releaseDate);
     }
 
-    @Override public void renderVoteAverage(@NonNull String voteAverage) {
+    @Override public void renderVoteAverage(@NonNull String voteAverage, float rating) {
+        voteAverageRatingBar.setRating(rating);
         voteAverageTextView.setText(voteAverage);
     }
 
@@ -95,9 +73,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     }
 
     @Override public void renderPosterImage(@NonNull String posterPath) {
-        Glide.with(this)
-             .load(posterPath)
-             .into(posterImageView);
+        GlideUtil.displayImage(this, posterPath, posterImageView);
+    }
+
+    @Override public void renderBackdropPhoto(@NonNull String backdropPhotoPath) {
+        GlideUtil.displayImage(this, backdropPhotoPath, backdropPhotoImageView);
     }
 
     @Override public void finishActivity() {

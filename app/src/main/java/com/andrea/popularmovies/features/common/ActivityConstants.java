@@ -7,4 +7,5 @@ public class ActivityConstants {
     public static final String MOVIE_VOTE_AVERAGE = "MVA";
     public static final String MOVIE_PLOT_SYNOPSIS = "MPS";
     public static final String MOVIE_POSTER = "MP";
+    public static final String MOVIE_BACKDROP_PHOTO = "MBDP";
 }

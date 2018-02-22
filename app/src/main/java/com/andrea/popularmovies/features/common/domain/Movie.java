@@ -12,16 +12,12 @@ public class Movie implements Parcelable {
 
     private static final String BASE_MOVIE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
 
-    @SerializedName("id") @Expose private Integer id;
     @SerializedName("title") @Expose private String title;
     @SerializedName("release_date") @Expose private String releaseDate;
     @SerializedName("vote_average") @Expose private float voteAverage;
     @SerializedName("overview") @Expose private String plotSynopsis;
     @SerializedName("poster_path") @Expose private String posterPath;
-
-    public Integer getId() {
-        return id;
-    }
+    @SerializedName("backdrop_path") @Expose private String backdropPhotoPath;
 
     @NonNull public String getTitle() {
         return title;
@@ -43,12 +39,15 @@ public class Movie implements Parcelable {
         return BASE_MOVIE_POSTER_URL + posterPath;
     }
 
+    @NonNull public String getBackdropPhotoPath() { return BASE_MOVIE_POSTER_URL + backdropPhotoPath; }
+
     protected Movie(Parcel in) {
         title = in.readString();
         releaseDate = in.readString();
         voteAverage = in.readFloat();
         plotSynopsis = in.readString();
         posterPath = in.readString();
+        backdropPhotoPath = in.readString();
     }
 
     @Override
@@ -63,6 +62,7 @@ public class Movie implements Parcelable {
         dest.writeFloat(voteAverage);
         dest.writeString(plotSynopsis);
         dest.writeString(posterPath);
+        dest.writeString(backdropPhotoPath);
     }
 
     @SuppressWarnings("unused")

@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.application.MovieApplication;
 import com.andrea.popularmovies.features.common.domain.Movie;
-import com.bumptech.glide.Glide;
+import com.andrea.popularmovies.util.GlideUtil;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
         void onListItemClick(int listItem);
     }
 
-    public MainAdapter(@NonNull ListItemClickListener onClickListener,
+    MainAdapter(@NonNull ListItemClickListener onClickListener,
                        @NonNull List<Movie> movieList) {
         this.onClickListener = onClickListener;
         this.movieList = movieList;
@@ -55,9 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
         }
 
         void bind(int listItem) {
-            Glide.with(MovieApplication.getDagger().getContext())
-                 .load(movieList.get(listItem).getPosterPath())
-                 .into(moviePosterImageView);
+            GlideUtil.displayImage(MovieApplication.getDagger().getContext(), movieList.get(listItem).getPosterPath(), moviePosterImageView);
         }
 
         @Override public void onClick(View view) {

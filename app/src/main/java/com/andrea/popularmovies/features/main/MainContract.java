@@ -1,10 +1,13 @@
 package com.andrea.popularmovies.features.main;
 
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 
-import com.andrea.popularmovies.features.common.domain.PopularMovies;
-import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
+import com.andrea.popularmovies.features.common.domain.Movie;
+
+import java.util.List;
 
 public interface MainContract {
     interface View {
@@ -12,17 +15,15 @@ public interface MainContract {
 
         void renderTopRatedMoviesTitle(@NonNull String title);
 
-        void showPopularMovies(@NonNull PopularMovies movie);
+        void showMoviesList(@NonNull List<Movie> movieList);
 
-        void showTopRatedMovies(@NonNull TopRatedMovies topRatedMovies);
-
-        void showError(@NonNull String message);
+        void showError(@NonNull AlertDialog.Builder builder);
 
         void showProgressBar();
 
         void hideProgressBar();
 
-        void navigateToMovieDetails(int listItem);
+        void navigateToMovieDetails(@NonNull Intent intent);
     }
 
     interface Presenter {

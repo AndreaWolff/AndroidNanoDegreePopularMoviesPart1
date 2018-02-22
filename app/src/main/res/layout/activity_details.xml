@@ -1,40 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.andrea.popularmovies.features.details.ui.DetailsActivity">
+        tools:context="com.andrea.popularmovies.features.details.ui.DetailsActivity"
+        >
 
-        <TextView
-            android:id="@+id/textview_details_title_label"
+        <ImageView
+            android:id="@+id/imageview_details_backdrop_photo"
             android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="64dp"
-            android:text="@string/details_title_label"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
+            android:layout_height="300dp"
+            android:alpha="0.5"
+            android:contentDescription="@string/movie_backdrop_image_description"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@mipmap/ic_launcher"
+            />
 
         <ImageView
             android:id="@+id/imageview_details_movie_poster"
             android:layout_width="150dp"
             android:layout_height="250dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="120dp"
             android:contentDescription="@string/movie_poster_image_description"
-            android:scaleType="fitCenter"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:srcCompat="@mipmap/ic_launcher"
+            />
 
         <TextView
             android:id="@+id/textview_details_title"
@@ -43,60 +48,67 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_details_title_label"
-            tools:text="The Hunt for the Red October" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintTop_toBottomOf="@+id/imageview_details_backdrop_photo"
+            tools:text="The Hunt for the Red October"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            />
 
         <TextView
             android:id="@+id/textview_details_release_date_label"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="19dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/details_release_date_label"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_details_title" />
+            app:layout_constraintStart_toEndOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_title"
+            />
 
-        <TextView
-            android:id="@+id/textview_details_release_date"
+        <RelativeLayout
+            android:id="@+id/relativeLayout2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginBottom="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date_label"
-            tools:text="2 March 1990" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintStart_toEndOf="@+id/imageview_details_movie_poster"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date"
+            app:layout_constraintVertical_bias="0.0"
+            >
 
-        <TextView
-            android:id="@+id/textview_details_rating_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:text="@string/details_vote_average_label"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_details_release_date" />
+            <RatingBar
+                android:id="@+id/ratingbar_voting_average_rating"
+                style="@style/RatingBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:background="#FFFFFF"
+                android:numStars="5"
+                android:progressTint="#FDD835"
+                android:rating="5"
+                android:secondaryProgressTint="#FBC02D"
+                android:stepSize=".1"
+                android:layout_centerVertical="true"
+                />
 
-        <TextView
-            android:id="@+id/textview_details_vote_average"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/imageview_details_movie_poster"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textview_details_rating_label"
-            tools:text="7.6/10" />
+            <TextView
+                android:id="@+id/textview_details_vote_average"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/ratingbar_voting_average_rating"
+                android:paddingRight="4dp"
+                android:paddingLeft="4dp"
+                tools:text="75%"
+                />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/textview_details_plot_synopsis_label"
@@ -104,11 +116,13 @@
             android:layout_height="19dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="@string/details_plot_synopsis_label"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageview_details_movie_poster" />
+            app:layout_constraintTop_toBottomOf="@+id/imageview_details_movie_poster"
+            />
 
         <TextView
             android:id="@+id/textview_details_plot_synopsis"
@@ -117,12 +131,28 @@
             android:layout_marginBottom="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textview_details_plot_synopsis_label"
-            tools:text="This is a movie about a boat and spy and has lots of drama and is ultimately a good movie!" />
+            app:layout_constraintVertical_bias="0.0"
+            tools:text="This is a movie about a boat and spy and has lots of drama and is ultimately a good movie!"
+            />
+
+        <TextView
+            android:id="@+id/textview_details_release_date"
+            android:layout_width="0dp"
+            android:layout_height="19dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:gravity="start"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textview_details_release_date_label"
+            app:layout_constraintTop_toBottomOf="@+id/textview_details_title"
+            tools:text="2 March 1990"
+            />
 
     </android.support.constraint.ConstraintLayout>
 
