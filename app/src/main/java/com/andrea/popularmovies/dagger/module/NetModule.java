@@ -30,6 +30,7 @@ public class NetModule {
 
     @Singleton @Provides Retrofit getRetrofit() {
         return new Retrofit.Builder()
+                .client(getOkHttpClient())
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())

@@ -44,8 +44,8 @@ public class MainPresenter implements MainContract.Presenter {
     private WeakReference<MainContract.View> viewWeakReference;
     private List<Movie> movieList;
 
-    @Inject public MainPresenter(@NonNull MovieDao movieDao,
-                                 @NonNull Context context) {
+    @Inject MainPresenter(@NonNull MovieDao movieDao,
+                          @NonNull Context context) {
         this.movieDao = movieDao;
         this.context = context;
         movieList = new ArrayList<>();

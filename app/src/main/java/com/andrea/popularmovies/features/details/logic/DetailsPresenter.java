@@ -35,7 +35,7 @@ public class DetailsPresenter implements DetailsContract.Presenter {
     private String posterPath;
     private String backdropPhotoPath;
 
-    @Inject public DetailsPresenter(@NonNull Context context) {
+    @Inject DetailsPresenter(@NonNull Context context) {
         this.context = context;
     }
 
