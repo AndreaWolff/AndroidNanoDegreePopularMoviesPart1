@@ -3,6 +3,8 @@ package com.andrea.popularmovies.dagger.module;
 import android.support.annotation.NonNull;
 
 import com.andrea.popularmovies.features.common.dao.MovieDao;
+import com.andrea.popularmovies.features.common.repository.MovieRepository;
+import com.andrea.popularmovies.features.common.repository.MovieRepositoryDefault;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 
 import javax.inject.Singleton;
@@ -24,13 +26,13 @@ public class NetModule {
         this.baseUrl = baseUrl;
     }
 
-    @Singleton @Provides OkHttpClient getOkHttpClient() {
+    @Singleton @Provides OkHttpClient okHttpClient() {
         return new OkHttpClient.Builder().addNetworkInterceptor(new StethoInterceptor()).build();
     }
 
-    @Singleton @Provides Retrofit getRetrofit() {
+    @Singleton @Provides Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
-                .client(getOkHttpClient())
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -38,7 +40,11 @@ public class NetModule {
                 .build();
     }
 
-    @Singleton @Provides MovieDao getMovieDao() {
-        return getRetrofit().create(MovieDao.class);
+    @Singleton @Provides MovieDao movieDao(Retrofit retrofit) {
+        return retrofit.create(MovieDao.class);
+    }
+
+    @Singleton @Provides MovieRepository movieRepository(MovieRepositoryDefault impl) {
+        return impl;
     }
 }

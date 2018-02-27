@@ -73,11 +73,11 @@ public class DetailsActivity extends BaseActivity implements DetailsContract.Vie
     }
 
     @Override public void renderPosterImage(@NonNull String posterPath) {
-        GlideUtil.displayImage(this, posterPath, posterImageView);
+        GlideUtil.displayImage(posterPath, posterImageView);
     }
 
     @Override public void renderBackdropPhoto(@NonNull String backdropPhotoPath) {
-        GlideUtil.displayImage(this, backdropPhotoPath, backdropPhotoImageView);
+        GlideUtil.displayImage(backdropPhotoPath, backdropPhotoImageView);
     }
 
     @Override public void finishActivity() {

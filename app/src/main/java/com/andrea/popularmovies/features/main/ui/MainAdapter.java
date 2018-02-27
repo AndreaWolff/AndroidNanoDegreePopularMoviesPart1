@@ -55,7 +55,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
         }
 
         void bind(int listItem) {
-            GlideUtil.displayImage(MovieApplication.getDagger().getContext(), movieList.get(listItem).getPosterPath(), moviePosterImageView);
+            GlideUtil.displayImage(movieList.get(listItem).getPosterPath(), moviePosterImageView);
         }
 
         @Override public void onClick(View view) {
