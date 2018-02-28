@@ -2,13 +2,13 @@ package com.andrea.popularmovies.features.details.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.application.MovieApplication;
-import com.andrea.popularmovies.base.BaseActivity;
 import com.andrea.popularmovies.dagger.component.DaggerDetailsComponent;
 import com.andrea.popularmovies.features.details.DetailsContract;
 import com.andrea.popularmovies.features.details.logic.DetailsPresenter;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailsActivity extends BaseActivity implements DetailsContract.View {
+public class DetailsActivity extends AppCompatActivity implements DetailsContract.View {
 
     @BindView(R.id.textview_details_title) TextView titleTextView;
     @BindView(R.id.textview_details_release_date) TextView releaseDateTextView;

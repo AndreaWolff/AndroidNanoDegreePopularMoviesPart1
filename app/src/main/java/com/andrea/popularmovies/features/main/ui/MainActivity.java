@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -11,7 +12,6 @@ import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.andrea.popularmovies.R;
-import com.andrea.popularmovies.base.BaseActivity;
 import com.andrea.popularmovies.dagger.component.DaggerMainComponent;
 import com.andrea.popularmovies.features.common.domain.Movie;
 import com.andrea.popularmovies.features.main.MainContract;
@@ -24,11 +24,12 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 import static com.andrea.popularmovies.application.MovieApplication.getDagger;
 
-public class MainActivity extends BaseActivity implements MainContract.View, MainAdapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements MainContract.View, MainAdapter.ListItemClickListener {
 
     @BindView(R.id.recyclerview_main_movie_posters) RecyclerView moviePosterRecyclerView;
     @BindView(R.id.progressbar_loading) ProgressBar loadingProgressBar;
@@ -47,6 +48,9 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mai
                            .inject(this);
 
         presenter.connectView(this, savedInstanceState);
+
+        moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this, getApplicationContext().getResources().getInteger(R.integer.grid_span_count)));
+        moviePosterRecyclerView.setHasFixedSize(true);
     }
 
     @Override protected void onSaveInstanceState(Bundle outState) {
@@ -95,13 +99,16 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mai
     }
 
     @Override public void showMoviesList(@NonNull List<Movie> movieList) {
-        moviePosterRecyclerView.setLayoutManager(new GridLayoutManager(this, getApplicationContext().getResources().getInteger(R.integer.grid_span_count)));
-        moviePosterRecyclerView.setHasFixedSize(true);
         MainAdapter adapter = new MainAdapter(this, movieList);
         moviePosterRecyclerView.setAdapter(adapter);
     }
 
-    @Override public void showError(@NonNull AlertDialog.Builder builder) {
+    @Override public void showError(@NonNull String errorMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setMessage(errorMessage)
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                    // do nothing
+                });
+        builder.create();
         builder.show();
     }
 
@@ -112,6 +119,11 @@ public class MainActivity extends BaseActivity implements MainContract.View, Mai
 
     @Override public void hideProgressBar() {
         moviePosterRecyclerView.setVisibility(VISIBLE);
+        loadingProgressBar.setVisibility(GONE);
+    }
+
+    @Override public void hideProgressBarOnMovieListError() {
+        moviePosterRecyclerView.setVisibility(GONE);
         loadingProgressBar.setVisibility(GONE);
     }
 

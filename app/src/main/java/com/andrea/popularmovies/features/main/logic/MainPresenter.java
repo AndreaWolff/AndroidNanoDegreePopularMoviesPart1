@@ -1,14 +1,11 @@
 package com.andrea.popularmovies.features.main.logic;
 
-
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.features.common.domain.Movie;
@@ -23,9 +20,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.subscriptions.CompositeSubscription;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+
 
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_BACKDROP_PHOTO;
 import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_PLOT_SYNOPSIS;
@@ -38,7 +35,7 @@ public class MainPresenter implements MainContract.Presenter {
 
     private static final String MOVIE_LIST = "MAPML";
 
-    private final CompositeSubscription subscriptions = new CompositeSubscription();
+    private final CompositeDisposable disposable = new CompositeDisposable();
     private final MovieRepository movieRepository;
     private final Context context;
 
@@ -82,7 +79,7 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     public void disconnectView() {
-        subscriptions.clear();
+        disposable.clear();
         view = null;
     }
 
@@ -91,21 +88,9 @@ public class MainPresenter implements MainContract.Presenter {
             view.showProgressBar();
         }
 
-        subscriptions.add(movieRepository.getPopularMoviesList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<PopularMovies>() {
-            @Override public void onCompleted() {
-                // do nothing
-            }
-
-            @Override public void onError(Throwable e) {
-                handleResponseError(e);
-            }
-
-            @Override public void onNext(PopularMovies popularMovies) {
-                handlePopularMoviesResponseSuccessful(popularMovies);
-            }
-        }));
+        disposable.add(movieRepository.getPopularMoviesList()
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(this::handlePopularMoviesResponseSuccessful, this::handleResponseError));
     }
 
     public void loadTopRatedMovies() {
@@ -113,21 +98,9 @@ public class MainPresenter implements MainContract.Presenter {
             view.showProgressBar();
         }
 
-        movieRepository.getTopRatedMovieList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<TopRatedMovies>() {
-            @Override public void onCompleted() {
-                // do nothing
-            }
-
-            @Override public void onError(Throwable e) {
-                handleResponseError(e);
-            }
-
-            @Override public void onNext(TopRatedMovies topRatedMovies) {
-                handleTopRatedMoviesResponseSuccessful(topRatedMovies);
-            }
-        });
+        disposable.add(movieRepository.getTopRatedMovieList()
+                               .observeOn(AndroidSchedulers.mainThread())
+                               .subscribe(this::handleTopRatedMoviesResponseSuccessful, this::handleResponseError));
     }
 
     private void handlePopularMoviesResponseSuccessful(PopularMovies popularMovies) {
@@ -150,13 +123,10 @@ public class MainPresenter implements MainContract.Presenter {
         }
     }
 
-    private void handleResponseError(Throwable e) {
+    private void handleResponseError(Throwable error) {
         if (view != null) {
-            view.showError(new AlertDialog.Builder(context).setMessage(e.getMessage()).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                @Override public void onClick(DialogInterface dialogInterface, int i) {
-                    // do nothing
-                }
-            }));
+            view.hideProgressBarOnMovieListError();
+            view.showError(error.getMessage());
         }
     }
 

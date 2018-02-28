@@ -12,6 +12,10 @@ public class PopularMovies {
 
     @SerializedName("results") @Expose private List<Movie> popularMoviesList = null;
 
+    public PopularMovies(@NonNull List<Movie> popularMoviesList) {
+        this.popularMoviesList = popularMoviesList;
+    }
+
     @NonNull public List<Movie> getPopularMovieList() {
         return popularMoviesList;
     }

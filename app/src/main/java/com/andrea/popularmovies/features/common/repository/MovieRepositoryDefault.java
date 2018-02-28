@@ -9,7 +9,7 @@ import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
 
 import javax.inject.Inject;
 
-import rx.Observable;
+import io.reactivex.Single;
 
 public class MovieRepositoryDefault implements MovieRepository {
 
@@ -19,11 +19,11 @@ public class MovieRepositoryDefault implements MovieRepository {
         this.movieDao = movieDao;
     }
 
-    @Override public Observable<PopularMovies> getPopularMoviesList() {
+    @NonNull @Override public Single<PopularMovies> getPopularMoviesList() {
         return movieDao.getPopularMoviesList();
     }
 
-    @Override public Observable<TopRatedMovies> getTopRatedMovieList() {
+    @NonNull @Override public Single<TopRatedMovies> getTopRatedMovieList() {
         return movieDao.getTopRatedMoviesList();
     }
 }

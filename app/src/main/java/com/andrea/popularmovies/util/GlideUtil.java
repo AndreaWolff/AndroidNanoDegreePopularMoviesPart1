@@ -1,7 +1,6 @@
 package com.andrea.popularmovies.util;
 
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 

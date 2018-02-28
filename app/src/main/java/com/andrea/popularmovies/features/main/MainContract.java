@@ -17,11 +17,13 @@ public interface MainContract {
 
         void showMoviesList(@NonNull List<Movie> movieList);
 
-        void showError(@NonNull AlertDialog.Builder builder);
+        void showError(@NonNull String errorMessage);
 
         void showProgressBar();
 
         void hideProgressBar();
+
+        void hideProgressBarOnMovieListError();
 
         void navigateToMovieDetails(@NonNull Intent intent);
     }

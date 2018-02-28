@@ -19,6 +19,20 @@ public class Movie implements Parcelable {
     @SerializedName("poster_path") @Expose private String posterPath;
     @SerializedName("backdrop_path") @Expose private String backdropPhotoPath;
 
+    public Movie(@NonNull String title,
+                 @NonNull String releaseDate,
+                 float voteAverage,
+                 @NonNull String plotSynopsis,
+                 @NonNull String posterPath,
+                 @NonNull String backdropPhotoPath) {
+        this.title = title;
+        this.releaseDate = releaseDate;
+        this.voteAverage = voteAverage;
+        this.plotSynopsis = plotSynopsis;
+        this.posterPath = posterPath;
+        this.backdropPhotoPath = backdropPhotoPath;
+    }
+
     @NonNull public String getTitle() {
         return title;
     }

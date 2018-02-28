@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.andrea.popularmovies.R;
-import com.andrea.popularmovies.application.MovieApplication;
 import com.andrea.popularmovies.features.common.domain.Movie;
 import com.andrea.popularmovies.util.GlideUtil;
 
@@ -25,14 +24,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
     }
 
     MainAdapter(@NonNull ListItemClickListener onClickListener,
-                       @NonNull List<Movie> movieList) {
+                @NonNull List<Movie> movieList) {
         this.onClickListener = onClickListener;
         this.movieList = movieList;
     }
 
     @Override public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                                  .inflate(R.layout.movie_poster_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_poster_list_item, parent, false);
         return new MovieViewHolder(view);
     }
 
