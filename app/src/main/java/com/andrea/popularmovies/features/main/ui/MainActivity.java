@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     // endregion
 
     // region Main Adapter
-    @Override public void onListItemClick(int listItem) {
-        presenter.onMoviePosterSelected(listItem);
+    @Override public void onListItemClick(Movie movie) {
+        presenter.onMoviePosterSelected(movie);
     }
     // endregion
 

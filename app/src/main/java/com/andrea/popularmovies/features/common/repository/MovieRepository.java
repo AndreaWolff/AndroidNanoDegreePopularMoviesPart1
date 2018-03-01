@@ -1,15 +1,15 @@
 package com.andrea.popularmovies.features.common.repository;
 
-
 import android.support.annotation.NonNull;
 
-import com.andrea.popularmovies.features.common.domain.PopularMovies;
-import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
+import com.andrea.popularmovies.features.common.domain.Movie;
+
+import java.util.List;
 
 import io.reactivex.Single;
 
 public interface MovieRepository {
-    @NonNull Single<PopularMovies> getPopularMoviesList();
+    @NonNull Single<List<Movie>> getPopularMoviesList();
 
-    @NonNull Single<TopRatedMovies> getTopRatedMovieList();
+    @NonNull Single<List<Movie>> getTopRatedMovieList();
 }

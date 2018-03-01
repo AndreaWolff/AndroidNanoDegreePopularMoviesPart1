@@ -4,15 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginRight="6dp"
-    android:layout_marginLeft="6dp"
+    android:layout_marginRight="@dimen/standard_padding_x"
+    android:layout_marginLeft="@dimen/standard_padding_x"
     tools:context="com.andrea.popularmovies.features.main.ui.MainActivity"
     >
 
     <android.support.v7.widget.RecyclerView
         android:clipToPadding="false"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp"
+        android:paddingBottom="@dimen/standard_padding_half"
+        android:paddingTop="@dimen/standard_padding_half"
         android:id="@+id/recyclerview_main_movie_posters"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

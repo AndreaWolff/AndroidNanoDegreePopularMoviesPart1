@@ -4,8 +4,6 @@ import android.content.Context;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.features.common.domain.Movie;
-import com.andrea.popularmovies.features.common.domain.PopularMovies;
-import com.andrea.popularmovies.features.common.domain.TopRatedMovies;
 import com.andrea.popularmovies.features.common.repository.MovieRepository;
 import com.andrea.popularmovies.features.main.MainContract;
 
@@ -73,10 +71,10 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void loadPopularMovies_returnMovieList() {
+    public void connectView_loadPopularMovies_returnMovieList() {
         // Setup
         when(context.getString(R.string.main_popular_movies_title)).thenReturn("Popular Movies");
-        when(movieRepository.getPopularMoviesList()).thenReturn(Single.just(getPopularMovieList()));
+        when(movieRepository.getPopularMoviesList()).thenReturn(Single.just(getMovies()));
 
         // Run
         presenter.connectView(view, null);
@@ -95,7 +93,7 @@ public class MainPresenterTest {
     public void loadPopularMovies_fromSettings_returnMovieList() {
         // Setup
         when(context.getString(R.string.main_popular_movies_title)).thenReturn("Popular Movies");
-        when(movieRepository.getPopularMoviesList()).thenReturn(Single.just(getPopularMovieList()));
+        when(movieRepository.getPopularMoviesList()).thenReturn(Single.just(getMovies()));
         presenter.connectView(view, null);
         reset(view);
 
@@ -113,7 +111,7 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void loadPopularMovies_returnError() {
+    public void connectView_loadPopularMovies_returnError() {
         // Setup
         when(movieRepository.getPopularMoviesList()).thenReturn(Single.error(new Throwable("Unknown Error")));
 
@@ -134,7 +132,7 @@ public class MainPresenterTest {
         // Setup
         when(context.getString(R.string.main_top_rated_movies_title)).thenReturn("Top-Rated Movies");
         when(movieRepository.getPopularMoviesList()).thenReturn(Single.never());
-        when(movieRepository.getTopRatedMovieList()).thenReturn(Single.just(getTopRatedMovieList()));
+        when(movieRepository.getTopRatedMovieList()).thenReturn(Single.just(getMovies()));
         presenter.connectView(view, null);
         reset(view);
 
@@ -174,7 +172,7 @@ public class MainPresenterTest {
     @Test
     public void disconnectView() {
         // Setup
-        when(movieRepository.getPopularMoviesList()).thenReturn(Single.just(getPopularMovieList()));
+        when(movieRepository.getPopularMoviesList()).thenReturn(Single.just(getMovies()));
         presenter.connectView(view, null);
         reset(view);
 
@@ -186,16 +184,10 @@ public class MainPresenterTest {
     }
 
     // region Test Helper
-    private PopularMovies getPopularMovieList() {
-        List<Movie> movieList = new ArrayList<>();
-        movieList.add(getMovie());
-        return new PopularMovies(movieList);
-    }
-
-    private TopRatedMovies getTopRatedMovieList() {
-        List<Movie> movieList = new ArrayList<>();
-        movieList.add(getMovie());
-        return new TopRatedMovies(movieList);
+    private List<Movie> getMovies() {
+        List<Movie> movies = new ArrayList<>();
+        movies.add(getMovie());
+        return movies;
     }
 
     private Movie getMovie() {

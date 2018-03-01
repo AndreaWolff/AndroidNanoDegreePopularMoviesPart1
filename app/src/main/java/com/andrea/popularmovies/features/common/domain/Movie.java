@@ -1,23 +1,19 @@
 package com.andrea.popularmovies.features.common.domain;
 
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class Movie implements Parcelable {
 
     private static final String BASE_MOVIE_POSTER_URL = "http://image.tmdb.org/t/p/w185";
 
-    @SerializedName("title") @Expose private String title;
-    @SerializedName("release_date") @Expose private String releaseDate;
-    @SerializedName("vote_average") @Expose private float voteAverage;
-    @SerializedName("overview") @Expose private String plotSynopsis;
-    @SerializedName("poster_path") @Expose private String posterPath;
-    @SerializedName("backdrop_path") @Expose private String backdropPhotoPath;
+    private final String title;
+    private final String releaseDate;
+    private final float voteAverage;
+    private final String plotSynopsis;
+    private final String posterPath;
+    private final String backdropPhotoPath;
 
     public Movie(@NonNull String title,
                  @NonNull String releaseDate,

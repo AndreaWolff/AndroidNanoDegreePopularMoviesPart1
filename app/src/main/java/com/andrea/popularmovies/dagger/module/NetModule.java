@@ -2,7 +2,7 @@ package com.andrea.popularmovies.dagger.module;
 
 import android.support.annotation.NonNull;
 
-import com.andrea.popularmovies.features.common.dao.MovieDao;
+import com.andrea.popularmovies.features.common.repository.MovieDao;
 import com.andrea.popularmovies.features.common.repository.MovieRepository;
 import com.andrea.popularmovies.features.common.repository.MovieRepositoryDefault;
 import com.facebook.stetho.okhttp3.StethoInterceptor;

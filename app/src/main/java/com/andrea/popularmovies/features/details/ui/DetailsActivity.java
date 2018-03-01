@@ -2,7 +2,9 @@ package com.andrea.popularmovies.features.details.ui;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -35,6 +37,11 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
 
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
         ButterKnife.bind(this);
 
         DaggerDetailsComponent.builder()
@@ -48,6 +55,15 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
     @Override protected void onDestroy() {
         super.onDestroy();
         presenter.disconnectView();
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     // region View methods

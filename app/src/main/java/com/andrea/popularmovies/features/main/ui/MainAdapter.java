@@ -1,6 +1,5 @@
 package com.andrea.popularmovies.features.main.ui;
 
-
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +19,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
     private List<Movie> movieList;
 
     interface ListItemClickListener {
-        void onListItemClick(int listItem);
+        void onListItemClick(Movie movie);
     }
 
     MainAdapter(@NonNull ListItemClickListener onClickListener,
@@ -57,7 +56,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.MovieViewHolde
         }
 
         @Override public void onClick(View view) {
-            onClickListener.onListItemClick(getAdapterPosition());
+            onClickListener.onListItemClick(movieList.get(getAdapterPosition()));
         }
     }
 }
