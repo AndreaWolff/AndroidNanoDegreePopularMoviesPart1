@@ -13,7 +13,7 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private MovieApplication application;
+    private final MovieApplication application;
 
     public AppModule(@NonNull MovieApplication application) {
         this.application = application;

@@ -3,7 +3,6 @@ package com.andrea.popularmovies.features.main;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 
 import com.andrea.popularmovies.features.common.domain.Movie;
 

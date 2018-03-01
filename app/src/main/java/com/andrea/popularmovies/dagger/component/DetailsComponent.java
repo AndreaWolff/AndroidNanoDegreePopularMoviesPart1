@@ -4,8 +4,6 @@ import com.andrea.popularmovies.dagger.module.DetailsModule;
 import com.andrea.popularmovies.dagger.scope.PerActivity;
 import com.andrea.popularmovies.features.details.ui.DetailsActivity;
 
-import javax.inject.Singleton;
-
 import dagger.Component;
 
 @PerActivity
