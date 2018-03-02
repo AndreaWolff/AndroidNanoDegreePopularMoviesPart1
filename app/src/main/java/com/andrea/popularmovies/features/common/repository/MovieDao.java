@@ -5,8 +5,8 @@ import retrofit2.http.GET;
 
 public interface MovieDao {
 
-    @GET("movie/popular?api_key=") Single<MoviesDto> getPopularMoviesList();
+    @GET("movie/popular?api_key=/*Insert API_KEY here*/") Single<MoviesDto> getPopularMoviesList();
 
-    @GET("movie/top_rated?api_key=") Single<MoviesDto> getTopRatedMoviesList();
+    @GET("movie/top_rated?api_key=/*Insert API_KEY here*/") Single<MoviesDto> getTopRatedMoviesList();
 
 }

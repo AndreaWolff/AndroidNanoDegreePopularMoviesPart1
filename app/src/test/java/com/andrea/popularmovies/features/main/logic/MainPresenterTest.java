@@ -3,27 +3,20 @@ package com.andrea.popularmovies.features.main.logic;
 import android.content.Context;
 
 import com.andrea.popularmovies.R;
+import com.andrea.popularmovies.BaseUnitTest;
 import com.andrea.popularmovies.features.common.domain.Movie;
 import com.andrea.popularmovies.features.common.repository.MovieRepository;
 import com.andrea.popularmovies.features.main.MainContract;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.android.plugins.RxAndroidPlugins;
-import io.reactivex.schedulers.Schedulers;
-
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -33,8 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class MainPresenterTest {
+public class MainPresenterTest extends BaseUnitTest {
 
     @Mock private MovieRepository movieRepository;
     @Mock private Context context;
@@ -45,14 +37,8 @@ public class MainPresenterTest {
 
     private MainPresenter presenter;
 
-    @BeforeClass
-    public static void createDelegatingScheduler() {
-        RxAndroidPlugins.setInitMainThreadSchedulerHandler(__ -> Schedulers.trampoline());
-    }
-
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+    @Override public void setUp() throws Exception {
+        super.setUp();
 
         presenter = new MainPresenter(movieRepository, context);
     }
