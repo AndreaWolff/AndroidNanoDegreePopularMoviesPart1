@@ -51,6 +51,7 @@ public class Movie implements Parcelable {
 
     @NonNull public String getBackdropPhotoPath() { return BASE_MOVIE_POSTER_URL + backdropPhotoPath; }
 
+    // Parcelable code generated from http://www.parcelabler.com/
     private Movie(Parcel in) {
         title = in.readString();
         releaseDate = in.readString();

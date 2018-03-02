@@ -1,6 +1,5 @@
 package com.andrea.popularmovies.features.common;
 
-
 public class ActivityConstants {
     public static final String MOVIE_TITLE = "MT";
     public static final String MOVIE_RELEASE_DATE = "MRD";
