@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
     // endregion
 
-    // region View methods
+    // region View Methods
     @Override public void renderPopularMoviesTitle(@NonNull String title) {
         setTitle(title);
     }
