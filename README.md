@@ -62,6 +62,6 @@ By completing this, the Popular Movies app will be able to run and display the m
     <ul>
       <li>Retrofit, GSON and RxJava2 libraries to help fetch data from the internet</li>
       <li>Dagger2 and Model View Presenter (MVP) to help with separation of concern</li>
-      <li>Mockito to help test logic code</li>
+      <li>Mockito to help test logical code</li>
     </ul>
 </ul>
