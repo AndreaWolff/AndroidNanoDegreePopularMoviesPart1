@@ -18,4 +18,12 @@
     <string name="movie_poster_image_description">Movie Poster</string>
     <string name="movie_backdrop_image_description">Backdrop Photo</string>
 
+    <!-- Errors -->
+    <string name="error_title_unauthorized">Unauthorized Access</string>
+    <string name="error_message_unauthorized">You are not authorized for this site. Please check you API key and try again.</string>
+    <string name="error_title_timeout">Timeout</string>
+    <string name="error_message_timeout">Unable to connect, please try again later.</string>
+    <string name="error_title">Error</string>
+    <string name="error_message">Something went wrong, please try again later.</string>
+
 </resources>

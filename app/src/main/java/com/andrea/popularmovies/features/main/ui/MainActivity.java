@@ -103,8 +103,10 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         moviePosterRecyclerView.setAdapter(adapter);
     }
 
-    @Override public void showError(@NonNull String errorMessage) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setMessage(errorMessage)
+    @Override public void showError(@NonNull String title, @NonNull String errorMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle(title)
+                .setMessage(errorMessage)
                 .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
                     // do nothing
                 });

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.andrea.popularmovies.R;
 import com.andrea.popularmovies.features.common.domain.Movie;
@@ -19,13 +20,8 @@ import javax.inject.Inject;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 
-
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_BACKDROP_PHOTO;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_PLOT_SYNOPSIS;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_POSTER;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_RELEASE_DATE;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_TITLE;
-import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE_VOTE_AVERAGE;
+import static com.andrea.popularmovies.features.common.ActivityConstants.ERROR_MESSAGE_LOGGER;
+import static com.andrea.popularmovies.features.common.ActivityConstants.MOVIE;
 
 public class MainPresenter implements MainContract.Presenter {
 
@@ -128,20 +124,33 @@ public class MainPresenter implements MainContract.Presenter {
     private void handleResponseError(Throwable error) {
         if (view != null) {
             view.hideProgressBarOnMovieListError();
-            view.showError(error.getMessage());
+
+            configureErrorMessage(error);
         }
+    }
+
+    private void configureErrorMessage(Throwable error) {
+        String errorTitle;
+        String errorMessage;
+        if (error.getMessage().equals("HTTP 401 Unauthorized")) {
+            errorTitle = context.getString(R.string.error_title_unauthorized);
+            errorMessage = context.getString(R.string.error_message_unauthorized);
+        } else if (error.getMessage().equals("timeout")) {
+            errorTitle = context.getString(R.string.error_title_timeout);
+            errorMessage = context.getString(R.string.error_message_timeout);
+        } else {
+            errorTitle = context.getString(R.string.error_title);
+            errorMessage = context.getString(R.string.error_message);
+            Log.d(ERROR_MESSAGE_LOGGER, error.getMessage());
+        }
+
+        view.showError(errorTitle, errorMessage);
     }
 
     public void onMoviePosterSelected(Movie movie) {
         if (view != null) {
             Intent intent = new Intent(context, DetailsActivity.class);
-            intent.putExtra(MOVIE_TITLE, movie.getTitle());
-            intent.putExtra(MOVIE_RELEASE_DATE, movie.getReleaseDate());
-            intent.putExtra(MOVIE_VOTE_AVERAGE, movie.getVoteAverage());
-            intent.putExtra(MOVIE_PLOT_SYNOPSIS, movie.getPlotSynopsis());
-            intent.putExtra(MOVIE_POSTER, movie.getPosterPath());
-            intent.putExtra(MOVIE_BACKDROP_PHOTO, movie.getBackdropPhotoPath());
-
+            intent.putExtra(MOVIE, movie);
             view.navigateToMovieDetails(intent);
         }
     }

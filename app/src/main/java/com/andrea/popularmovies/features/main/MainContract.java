@@ -16,7 +16,7 @@ public interface MainContract {
 
         void showMoviesList(@NonNull List<Movie> movieList);
 
-        void showError(@NonNull String errorMessage);
+        void showError(@NonNull String title, @NonNull String errorMessage);
 
         void showProgressBar();
 
